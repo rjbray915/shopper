@@ -3,12 +3,12 @@
 #include "../include/Projectile.h"
 #include <cmath>
 
-void Antagonist::initProjectile(Character* target){
-	antProjectile = new Projectile(this, target, 4, 500, 0.0, SDL_FLIP_NONE, 1, 50, 50, "./images/projectile.png");
+void Antagonist::initProjectile(double damage, Character* target){
+	antProjectile = new Projectile(damage, this, target, 6, 500, 0.0, SDL_FLIP_NONE, 1, 50, 50, "./images/projectile.png");
 }
 
 void Antagonist::setVelocity(int randNum){
-
+/*
 	switch(randNum){
 		//left
 		case 0:
@@ -32,7 +32,7 @@ void Antagonist::setVelocity(int randNum){
 			yVel = 0;
 			break;
 		//default is stay the same 1/2 time
-	};
+	};*/
 }
 
 void Antagonist::followCharacter(Character* followed){
@@ -49,8 +49,8 @@ void Antagonist::followCharacter(Character* followed){
   fractX = abs(subX) / subDist;
   fractY = abs(subY) / subDist;
 
-	printf("subX: %f subY: %f subDist: %f\n", subX, subY, subDist);
-	printf("fractX: %f fractY: %f\n", fractX, fractY);
+	//printf("subX: %f subY: %f subDist: %f\n", subX, subY, subDist);
+	//printf("fractX: %f fractY: %f\n", fractX, fractY);
   //printf("x: %d y: %d\n", targetCollider->x, targetCollider->y);
   //printf("w: %d h: %d\n", (targetCollider->w)/2, (targetCollider->h)/2);
 
@@ -68,9 +68,10 @@ void Antagonist::followCharacter(Character* followed){
   else
     yVel = 0;
 
-  printf("xVel: %f yVel: %f\n", xVel, yVel);
-
-/*	//vars
+  //printf("xVel: %f yVel: %f\n", xVel, yVel);
+  //printf("x*x: %f y*y: %f\n", fractX*charVel, fractY*charVel);
+/*
+	//vars
 	int subX, subY;
 
 	//subtract the followed positions from ours

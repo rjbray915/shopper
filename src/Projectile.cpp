@@ -5,7 +5,7 @@
 #include <cmath>
 using namespace std;
 
-Projectile::Projectile(Character* started, Character* target, int pProjVel, int pTravelDist, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath){
+Projectile::Projectile(double pDamage, Character* started, Character* target, int pProjVel, int pTravelDist, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath){
 	int subX, subY;
 
 	this->started = started;
@@ -14,6 +14,7 @@ Projectile::Projectile(Character* started, Character* target, int pProjVel, int 
 	x = started->getXPos();
 	y = started->getYPos();
 
+	damage = pDamage;
 	timer = 0;
 	projVel = pProjVel;
 	xVel = 0;
@@ -64,10 +65,6 @@ void Projectile::updateVel(){
 	fractX = abs(subX) / subDist;
 	fractY = abs(subY) / subDist;
 
-	printf("x: %d y: %d\n", targetCollider->x, targetCollider->y);
-	printf("w: %d h: %d\n", (targetCollider->w)/2, (targetCollider->h)/2);
-
-
 	if(subX > 0)
 		xVel = fractX * projVel;
 	else if(subX < 0)
@@ -82,16 +79,17 @@ void Projectile::updateVel(){
 	else
 		yVel = 0;
 
-	printf("xVel: %f yVel: %f\n", xVel, yVel);
 }
 
 //the last element in walls is always the boundary for the game window
 void Projectile::move( std::vector<SDL_Rect*> walls ){
 	bool colliding = false;
+	bool hitTarget = false;
 
 	if(timer != 0){
 		if(timer >= 100){
 			timer = 0;
+			
 			//put it back at the start and 
 			x = started->getXPos();
 			y = started->getYPos();
@@ -104,9 +102,9 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 		}
 		else{
 			timer++;
+			return;
 		}
 
-		return;
 	}
 
 	//update the velocity real quick
@@ -123,7 +121,7 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	mCollider.y = y;
 
 	//add to the distance traveled
-	//distanceTrav += sqrt(xVel*xVel + yVel*yVel);
+	distanceTrav += sqrt(xVel*xVel + yVel*yVel);
 
 	//check if we are colliding with anything
 	for( int i = 0; i < walls.size() - 1; i++){
@@ -135,7 +133,7 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 
 	//check if we collided with the target
 	if( checkCollision(target->getCollider(), &mCollider)){
-		colliding = true;
+		hitTarget = true;
 	}
 
 	//check if going out of bounds
@@ -143,8 +141,14 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 		colliding = true;
 	}
 
-	if( colliding || distanceTrav >= travelDist ){
-
+	//check to deal damage
+	if(hitTarget){
+//		printf("dmg: %f\n", damage);
+		target->take_hit(damage);
+	}
+	//check for despawn
+	if( colliding || hitTarget || distanceTrav >= travelDist ){
+		
 
 		timer = 1;
 	}

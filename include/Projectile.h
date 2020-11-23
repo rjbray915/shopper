@@ -12,7 +12,7 @@ using namespace std;
 class Projectile{
   public:
     //construct/destruct
-    Projectile(Character* started, Character* target, int pProjVel, int pTravelDist, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath);
+    Projectile(double pDamage, Character* started, Character* target, int pProjVel, int pTravelDist, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath);
     ~Projectile();
 
 		//this is for changing velocity based on where the player is
@@ -42,6 +42,7 @@ class Projectile{
 		int getYPos();
 
   protected:
+		double damage;
 		Character* started;
 		Character* target;
     int x, y;

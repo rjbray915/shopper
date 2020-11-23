@@ -10,7 +10,7 @@ using namespace std;
 class Character{
   public:
     //construct/destruct
-    Character(int pX, int pY, int pCharVel, double pAngle, SDL_RendererFlip pFlip,
+    Character(double pMaxHitPoints, double pX, double pY, double pCharVel, double pAngle, SDL_RendererFlip pFlip,
 							int pNumClips, int pClipWidth, int pClipHeight, string imgPath);
     ~Character();
 
@@ -32,6 +32,9 @@ class Character{
     //collision detection between two rectangles
     bool checkCollision( SDL_Rect* a, SDL_Rect* b );
 
+		//take a hit
+		void take_hit(double dmg);
+
 		/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			getters
 		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -41,9 +44,10 @@ class Character{
 		int getYPos();
 
   protected:
-    int x, y;
-    int xVel, yVel;
-    int charVel;
+		double curHitPoints, maxHitPoints;
+    double x, y;
+    double xVel, yVel;
+    double charVel;
     double angle;
     SDL_RendererFlip flip;
     LTexture charTexture;

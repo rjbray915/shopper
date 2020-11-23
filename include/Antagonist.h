@@ -7,7 +7,7 @@
 class Antagonist : public Character{
 	public:
 		using Character::Character;
-		void initProjectile(Character* target);
+		void initProjectile(double damage, Character* target);
 		void setVelocity(int randNum);
 		void followCharacter(Character* followed);
 	

@@ -3,7 +3,9 @@
 #include <vector>
 using namespace std;
 
-Character::Character(int pX, int pY, int pCharVel, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath){
+Character::Character(double pMaxHitPoints, double pX, double pY, double pCharVel, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath){
+	maxHitPoints = pMaxHitPoints;
+	curHitPoints = maxHitPoints;
 	x = pX;
 	y = pY;
 	xVel = 0;
@@ -198,6 +200,16 @@ void Character::movingAnimation(){
   else{
     currClip = 0;
   }
+}
+
+void Character::take_hit(double dmg){
+	if(curHitPoints - dmg < 0) 
+		curHitPoints = 0;
+	else
+		curHitPoints -= dmg;
+
+	//temp
+	printf("HP: %f\n", curHitPoints);
 }
 
 SDL_Rect* Character::getCollider(){

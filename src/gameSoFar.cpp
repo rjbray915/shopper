@@ -55,9 +55,9 @@ int main( int argc, char* argv[] ){
 			walls.push_back( &border );
 
 			//our character 
-			Character* dan = new Character(500, 500, 5, 0.0, SDL_FLIP_NONE, 5, 40, 100, "./images/protagonist.png");
-			Antagonist* dummy = new Antagonist(0, 0, 2, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png");	
-			dummy->initProjectile(dan);
+			Character* dan = new Character(100, 500, 500, 6, 0.0, SDL_FLIP_NONE, 5, 40, 100, "./images/protagonist.png");
+			Antagonist* dummy = new Antagonist(100, 0, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png");	
+			dummy->initProjectile(10, dan);
 
 			//quit flag
       bool quit = false;
