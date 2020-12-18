@@ -36,7 +36,7 @@ Projectile::Projectile(double pDamage, Character* started, Character* target, in
 
 	//get the texture
 	if( !projTexture.loadFromFile(imgPath.c_str() ) ){
-		printf("urmomlol\n");
+		printf("could not load projectile texture\n");
 	}
 
 	for(int i = 0; i < numClips; i++){
@@ -60,11 +60,13 @@ void Projectile::updateVel(){
 	subY = target->getYPos() + targetCollider->h / 2 - started->getYPos();
 
 
-	//need to calculate the 
+	//need to calculate the relative distances in x & y to calculate how much
+	//it should travel in both directions
 	subDist = sqrt(subX*subX + subY*subY);
 	fractX = abs(subX) / subDist;
 	fractY = abs(subY) / subDist;
 
+	//x
 	if(subX > 0)
 		xVel = fractX * projVel;
 	else if(subX < 0)
@@ -86,6 +88,8 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	bool colliding = false;
 	bool hitTarget = false;
 
+	//this is a temporary solution to timing without using frames.
+	//THIS NEEDS TO BE UPDATED WHEN I LEARN GAME TIMING.
 	if(timer != 0){
 		if(timer >= 100){
 			timer = 0;
@@ -107,9 +111,6 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 
 	}
 
-	//update the velocity real quick
-	//updateVel();
-
 	//note: we do it this way so that first of all it doesn't render and make
 	//it look buggy. also, it can't move into the box and stay there
 	//move x
@@ -123,7 +124,7 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	//add to the distance traveled
 	distanceTrav += sqrt(xVel*xVel + yVel*yVel);
 
-	//check if we are colliding with anything
+	//check if we are colliding with any objects
 	for( int i = 0; i < walls.size() - 1; i++){
 		if( checkCollision( walls.at( i ), &mCollider ) ){
 			colliding = true;
@@ -143,18 +144,16 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 
 	//check to deal damage
 	if(hitTarget){
-//		printf("dmg: %f\n", damage);
 		target->take_hit(damage);
 	}
 	//check for despawn
 	if( colliding || hitTarget || distanceTrav >= travelDist ){
-		
-
 		timer = 1;
 	}
 
 }
 
+//check if the projectile is within the game window
 bool Projectile::checkBounds( SDL_Rect* border ){
 	//left side 
 	if( mCollider.x < border->x ){
