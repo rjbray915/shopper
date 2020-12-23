@@ -11,6 +11,7 @@
 #include "../include/Character.h"
 #include "../include/Antagonist.h"
 #include "../include/Projectile.h"
+#include "../include/Board.h"
 //#include "../include/Protagonist.h"
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,20 +44,22 @@ int main( int argc, char* argv[] ){
   if( init() ){
     if( loadMedia() ){
       //background textures
+			Board board(50, 50, "images/boardTextures.png");
+			board.make_board("boards/main.txt");
       LTexture grocery;
       grocery.loadFromFile( "images/groceryBack.jpg" );
 
       //environmental objects
       const int NUM_WALLS = 3;
       std::vector<SDL_Rect*> walls;
-      SDL_Rect wallTest = { 594, 243, 1148-594, 365-243 };
-      walls.push_back(&wallTest);
+      /*SDL_Rect wallTest = { 594, 243, 1148-594, 365-243 };
+      walls.push_back(&wallTest);*/
       SDL_Rect border = { 0, 0, 1280, 720 };
 			walls.push_back( &border );
 
-			//our character 
+			//our character
 			Character* dan = new Character(100, 500, 500, 6, 0.0, SDL_FLIP_NONE, 5, 40, 100, "./images/protagonist.png");
-			Antagonist* dummy = new Antagonist(100, 0, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png");	
+			Antagonist* dummy = new Antagonist(100, 0, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png");
 			dummy->initProjectile(10, dan);
 
 			//quit flag
@@ -77,7 +80,7 @@ int main( int argc, char* argv[] ){
           dan->handleEvent( &e );
 
         }
-				
+
 				//make dummy move around randomly like a lil dummy
         dummy->followCharacter(dan);
 
@@ -86,7 +89,8 @@ int main( int argc, char* argv[] ){
         SDL_RenderClear( gRenderer );
 
         //background render
-        grocery.render( 0, 0 );
+        //grocery.render( 0, 0 );
+				board.render_board();
 
         //sprite movement
         dan->move( walls );
