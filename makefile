@@ -22,18 +22,21 @@ clean:
 #main
 #bin/test: obj/gameSoFar.o obj/Character.o obj/Protagonist.o
 #	g++ $(COMPILER_FLAGS) $(LINKER_FLAGS) -o bin/test obj/gameSoFar.o obj/Character.o obj/Protagonist.o
-bin/test: obj/gameSoFar.o obj/Character.o obj/Antagonist.o obj/Projectile.o
-	g++ $(COMPILER_FLAGS) $(LINKER_FLAGS) -o bin/test obj/gameSoFar.o obj/Character.o obj/Antagonist.o obj/Projectile.o
+bin/test: obj/gameSoFar.o obj/Character.o obj/Antagonist.o obj/Projectile.o obj/Board.o
+	g++ $(COMPILER_FLAGS) $(LINKER_FLAGS) -o bin/test obj/gameSoFar.o obj/Character.o obj/Antagonist.o obj/Projectile.o obj/Board.o
 
 #compiling other files
 obj/Character.o: include/Character.h
 	g++ -c -o obj/Character.o src/Character.cpp
 
-obj/Antagonist.o: include/Antagonist.h include/Character.h
+obj/Antagonist.o: include/Antagonist.h include/Character.h src/Antagonist.cpp
 	g++ -c -o obj/Antagonist.o src/Antagonist.cpp
 
 obj/Projectile.o: include/Projectile.h
 	g++ -c -o obj/Projectile.o src/Projectile.cpp
+
+obj/Board.o: include/Board.h src/Board.cpp
+	g++ -c -o obj/Board.o src/Board.cpp
 
 #obj/Protagonist.o: include/Protagonist.h
 #	g++ -c -o obj/Protagonist.o src/Protagonist.cpp

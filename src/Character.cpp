@@ -22,7 +22,7 @@ Character::Character(double pMaxHitPoints, double pX, double pY, double pCharVel
 	mCollider.h = pClipHeight;
 
 	if( !charTexture.loadFromFile(imgPath.c_str() ) ){
-		printf("urmomlol\n");
+		printf("couldn't load character texture\n");
 	}
 
 	for(int i = 0; i < numClips; i++){
@@ -92,7 +92,7 @@ void Character::move( std::vector<SDL_Rect*> walls ){
 	//move y
 	y += yVel;
 	mCollider.y = y;
-	
+
 	//check if we are colliding with anything
 	for( int i = 0; i < walls.size() - 1; i++){
 		if( checkCollision( walls.at( i ), &mCollider ) ){
@@ -120,7 +120,7 @@ void Character::move( std::vector<SDL_Rect*> walls ){
 }
 
 bool Character::checkBounds( SDL_Rect* border ){
-	//left side 
+	//left side
 	if( mCollider.x < border->x ){
 		return true;
 	}
@@ -129,7 +129,7 @@ bool Character::checkBounds( SDL_Rect* border ){
 	}
 	else if( mCollider.x + mCollider.w > border->x + border->w){
 		return true;
-	}	
+	}
 	else if( mCollider.y + mCollider.h > border->y + border->h){
 		return true;
 	}
@@ -203,7 +203,7 @@ void Character::movingAnimation(){
 }
 
 void Character::take_hit(double dmg){
-	if(curHitPoints - dmg < 0) 
+	if(curHitPoints - dmg < 0)
 		curHitPoints = 0;
 	else
 		curHitPoints -= dmg;

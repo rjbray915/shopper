@@ -52,8 +52,6 @@ int main( int argc, char* argv[] ){
       //environmental objects
       const int NUM_WALLS = 3;
       std::vector<SDL_Rect*> walls;
-      /*SDL_Rect wallTest = { 594, 243, 1148-594, 365-243 };
-      walls.push_back(&wallTest);*/
       SDL_Rect border = { 0, 0, 1280, 720 };
 			walls.push_back( &border );
 
@@ -77,12 +75,13 @@ int main( int argc, char* argv[] ){
             quit = true;
           }
 
-          dan->handleEvent( &e );
-
+          //dan->handleEvent( &e );
+					board.dan_handle(&e);
         }
 
 				//make dummy move around randomly like a lil dummy
-        dummy->followCharacter(dan);
+        //dummy->followCharacter(dan);
+				//dummy->set_target(dan);
 
         //our rendering stuff
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
@@ -91,16 +90,18 @@ int main( int argc, char* argv[] ){
         //background render
         //grocery.render( 0, 0 );
 				board.render_board();
+				board.move_entities(walls);
+				board.render_entities();
 
-        //sprite movement
+        /*//sprite movement
         dan->move( walls );
         dummy->move( walls );
-				dummy->antProjectile->move( walls );
+				//dummy->antProjectile->move( walls );
 
         //sprite rendering
         dan->render();
-        dummy->render();
-				dummy->antProjectile->render();
+        dummy->render();*/
+				//dummy->antProjectile->render();
 
         SDL_RenderPresent( gRenderer );
 

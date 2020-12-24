@@ -44,23 +44,55 @@ void Antagonist::followCharacter(Character* followed){
   subX = followed->getXPos() + targetCollider->w / 2 - x;
   subY = followed->getYPos() + targetCollider->h / 2 - y;
 
-  //need to calculate the 
+  //need to calculate the
   subDist = sqrt(subX*subX + subY*subY);
   fractX = abs(subX) / subDist;
   fractY = abs(subY) / subDist;
 
-	//printf("subX: %f subY: %f subDist: %f\n", subX, subY, subDist);
-	//printf("fractX: %f fractY: %f\n", fractX, fractY);
-  //printf("x: %d y: %d\n", targetCollider->x, targetCollider->y);
-  //printf("w: %d h: %d\n", (targetCollider->w)/2, (targetCollider->h)/2);
-
+	//x direction
   if(subX > 0)
     xVel = fractX * charVel;
   else if(subX < 0)
     xVel = 0-fractX * charVel;
   else
     xVel = 0;
-  //y 
+  //y
+  if(subY > 0)
+    yVel = fractY * charVel;
+  else if(subY < 0)
+    yVel = 0-fractY * charVel;
+  else
+    yVel = 0;
+}
+
+void Antagonist::set_target(Character* pTarget){
+	target = pTarget;
+}
+
+//overloading the function so i can put characters in vector
+void Antagonist::move( std::vector<SDL_Rect*> walls ){
+	double subX, subY, subDist, fractX, fractY;
+  SDL_Rect* targetCollider;
+	bool colliding = false;
+
+  //aim for target's x
+  targetCollider = target->getCollider();
+  subX = target->getXPos() + targetCollider->w / 2 - x;
+  subY = target->getYPos() + targetCollider->h / 2 - y;
+
+  //need to calculate the
+  subDist = sqrt(subX*subX + subY*subY);
+  fractX = abs(subX) / subDist;
+  fractY = abs(subY) / subDist;
+
+	//x direction
+  if(subX > 0)
+    xVel = fractX * charVel;
+  else if(subX < 0)
+    xVel = 0-fractX * charVel;
+  else
+    xVel = 0;
+  //y
   if(subY > 0)
     yVel = fractY * charVel;
   else if(subY < 0)
@@ -68,33 +100,53 @@ void Antagonist::followCharacter(Character* followed){
   else
     yVel = 0;
 
-  //printf("xVel: %f yVel: %f\n", xVel, yVel);
-  //printf("x*x: %f y*y: %f\n", fractX*charVel, fractY*charVel);
-/*
-	//vars
-	int subX, subY;
+	//then the actual movement code
 
-	//subtract the followed positions from ours
-	subX = followed->getXPos() - this->x;
-	subY = followed->getYPos() - this->y;
+	//note: we do it this way so that first of all it doesn't render and make
+	//it look buggy. also, it can't move into the box and stay there
+	//move x
+	x += xVel;
+	mCollider.x = x;
 
-	if(subX > 0){
-		xVel = charVel;
-	}
-	else if(subX < 0){
-		xVel = 0-charVel;
-	}
-	else{
-		xVel = 0;
+	//move y
+	y += yVel;
+	mCollider.y = y;
+
+	//check if we are colliding with anything
+	for( int i = 0; i < walls.size() - 1; i++){
+		if( checkCollision( walls.at( i ), &mCollider ) ){
+			colliding = true;
+			break;
+		}
 	}
 
-	if(subY > 0){
-		yVel = charVel;
+	//check if going out of bounds
+	if( checkBounds( walls.at(walls.size()-1) ) ){
+		colliding = true;
 	}
-	else if(subY < 0){
-		yVel = 0-charVel;
+
+	if( colliding ){
+		//move back
+		x -= xVel;
+		mCollider.x = x;
 	}
-	else{
-		yVel = 0;
-	}*/
+
+	if( colliding ){
+		//move back
+		y -= yVel;
+		mCollider.y = y;
+	}
+
+	//finally, move the Projectile
+	antProjectile->move(walls);
+}
+
+void Antagonist::render(){
+  //change our sprite clip for animation
+  movingAnimation();
+
+  charTexture.render( x, y, &spriteClips[ currClip ], angle, NULL, flip );
+
+	//render projectile
+	antProjectile->render();
 }
