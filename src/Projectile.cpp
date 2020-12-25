@@ -93,8 +93,8 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	if(timer != 0){
 		if(timer >= 100){
 			timer = 0;
-			
-			//put it back at the start and 
+
+			//put it back at the start and
 			x = started->getXPos();
 			y = started->getYPos();
 			mCollider.x = x;
@@ -155,7 +155,7 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 
 //check if the projectile is within the game window
 bool Projectile::checkBounds( SDL_Rect* border ){
-	//left side 
+	//left side
 	if( mCollider.x < border->x ){
 		return true;
 	}
@@ -164,7 +164,7 @@ bool Projectile::checkBounds( SDL_Rect* border ){
 	}
 	else if( mCollider.x + mCollider.w > border->x + border->w){
 		return true;
-	}	
+	}
 	else if( mCollider.y + mCollider.h > border->y + border->h){
 		return true;
 	}
@@ -216,7 +216,7 @@ void Projectile::render(){
 	//change our sprite clip for animation
 	//movingAnimation();
 
-	projTexture.render( x, y, &spriteClips[ currClip ], angle, NULL, flip );
+	projTexture.render( x, y, /*&spriteClips[ currClip ]*/NULL, angle, NULL, flip );
 }
 
 void Projectile::movingAnimation(){

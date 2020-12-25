@@ -6,6 +6,7 @@ Board::Board(int sHeight, int sWidth, string textureFile){
   //initialize the height, make the texture
   spaceHeight = sHeight;
   spaceWidth = sWidth;
+  num_enemies = 0;
   texture_plate = new LTexture();
   texture_plate->loadFromFile(textureFile);
 
@@ -23,22 +24,35 @@ Board::Board(int sHeight, int sWidth, string textureFile){
 
   //make vector of enemies. index 0 is ALWAYS the main char
   protag = new Character(100, 500, 500, 6, 0.0, SDL_FLIP_NONE, 5, 40, 100, "./images/protagonist.png");
-  enemies.push_back( new Antagonist(100, 0, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png") );
-
-  //initialize the enemies' target
-  for(i = 0; i < enemies.size(); i++){
-    enemies.at(i)->set_target(protag );
-    enemies.at(i)->initProjectile(10, protag);
-  }
+  /*enemies.push_back(new Antagonist(100, i * spaceWidth, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png"));
+  enemies.at(0)->set_target(protag);
+  enemies.at(0)->initProjectile(10, protag);*/
 }
 
 void Board::make_board(string path){
+  int i;
   string row;
+  string enemies_str;
   ifstream iFSS(path);
 
   //read in each line of text, represents
-  while(iFSS >> row){
+  while(iFSS >> row && strcmp(row.c_str(), "end_map") != 0){
     board.push_back(row);
+  }
+
+  //read in number of enemies
+  iFSS >> enemies_str;
+  sscanf(enemies_str.c_str(), "%d", &num_enemies);
+  printf("%d\n", num_enemies);
+
+  for(i = 0; i < num_enemies; i++){
+    enemies.push_back( new Antagonist(100, rand() % 1280, rand()%720, 3, 0.0, SDL_FLIP_NONE, 5, 40, 40, "./images/blob.png") );
+  }
+
+  //initialize the enemies' target
+  for(i = 0; i < enemies.size(); i++){
+    enemies.at(i)->set_target(protag);
+    enemies.at(i)->initProjectile(10, protag);
   }
 }
 

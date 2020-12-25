@@ -26,8 +26,7 @@ Character::Character(double pMaxHitPoints, double pX, double pY, double pCharVel
 	}
 
 	for(int i = 0; i < numClips; i++){
-		//add i b/c im a dumbass and each sprite is 1 pixel apart
-		spriteClips.push_back( SDL_Rect{ pClipWidth*i + i, 0, pClipWidth, pClipHeight } );
+		spriteClips.push_back( SDL_Rect{ pClipWidth*i, 0, pClipWidth, pClipHeight } );
 	}
 }
 
@@ -187,7 +186,7 @@ void Character::movingAnimation(){
   static int tracker = 0;
 
   if( xVel != 0 || yVel != 0 ){
-    if( tracker % 12 == 0 ){
+    if( tracker % spriteClips.size() * 2 == 0 ){
       currClip++;
 
       if( currClip >= numClips ){

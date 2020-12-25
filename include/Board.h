@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include <cstdlib>
 #include <vector>
 #include <fstream>
 #include "LTexture.h"
@@ -21,7 +22,7 @@ class Board{
     void dan_handle(SDL_Event* e);
 
   protected:
-    int spaceHeight, spaceWidth;
+    int spaceHeight, spaceWidth, num_enemies;
     vector<string > board;
     LTexture* texture_plate;
     vector<SDL_Rect> squares;
