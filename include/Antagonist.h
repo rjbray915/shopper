@@ -11,7 +11,8 @@ class Antagonist : public Character{
 		void initProjectile(double damage, Character* target);
 		void setVelocity(int randNum);
 		void followCharacter(Character* followed);
-		void move( std::vector<SDL_Rect*> walls );
+		void move( std::vector<SDL_Rect*>* walls );
+		void walk_isle();
 		void set_target(Character* pTarget);
 		void render();
 

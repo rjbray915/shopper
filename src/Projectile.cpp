@@ -84,7 +84,7 @@ void Projectile::updateVel(){
 }
 
 //the last element in walls is always the boundary for the game window
-void Projectile::move( std::vector<SDL_Rect*> walls ){
+void Projectile::move( std::vector<SDL_Rect*>* walls ){
 	bool colliding = false;
 	bool hitTarget = false;
 
@@ -125,8 +125,8 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	distanceTrav += sqrt(xVel*xVel + yVel*yVel);
 
 	//check if we are colliding with any objects
-	for( int i = 0; i < walls.size() - 1; i++){
-		if( checkCollision( walls.at( i ), &mCollider ) ){
+	for( int i = 0; i < walls->size() - 1; i++){
+		if( checkCollision( walls->at( i ), &mCollider ) ){
 			colliding = true;
 			break;
 		}
@@ -138,7 +138,7 @@ void Projectile::move( std::vector<SDL_Rect*> walls ){
 	}
 
 	//check if going out of bounds
-	if( checkBounds( walls.at(walls.size()-1) ) ){
+	if( checkBounds( walls->at(walls->size()-1) ) ){
 		colliding = true;
 	}
 

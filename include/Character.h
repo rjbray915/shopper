@@ -11,14 +11,14 @@ class Character{
   public:
     //construct/destruct
     Character(double pMaxHitPoints, double pX, double pY, double pCharVel, double pAngle, SDL_RendererFlip pFlip,
-							int pNumClips, int pClipWidth, int pClipHeight, string imgPath);
+							int pNumClips, int pClipWidth, int pClipHeight, string imgPath, vector<string>* pBoard);
     ~Character();
 
     //handles events. characters will handle different events
     void handleEvent( SDL_Event* e );
 
     //movement functions. characters will move at different speeds
-    void move( std::vector<SDL_Rect*> walls );
+    void move( std::vector<SDL_Rect*>* walls );
 
 		//check if we went out of bounds
 		bool checkBounds( SDL_Rect* border );
@@ -59,4 +59,7 @@ class Character{
     vector< SDL_Rect > spriteClips;
     int currClip;
 		int numClips;
+
+    //the board it belongs to
+    vector<string>* board;
 };

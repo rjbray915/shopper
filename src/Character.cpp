@@ -3,7 +3,11 @@
 #include <vector>
 using namespace std;
 
-Character::Character(double pMaxHitPoints, double pX, double pY, double pCharVel, double pAngle, SDL_RendererFlip pFlip, int pNumClips, int pClipWidth, int pClipHeight, string imgPath){
+Character::Character(double pMaxHitPoints, double pX, double pY,
+											double pCharVel, double pAngle,
+											SDL_RendererFlip pFlip, int pNumClips,
+											int pClipWidth, int pClipHeight,
+											string imgPath, vector<string>* pBoard){
 	maxHitPoints = pMaxHitPoints;
 	curHitPoints = maxHitPoints;
 	x = pX;
@@ -20,6 +24,9 @@ Character::Character(double pMaxHitPoints, double pX, double pY, double pCharVel
 	mCollider.y = y;
 	mCollider.w = pClipWidth;
 	mCollider.h = pClipHeight;
+
+	//our board
+	board = pBoard;
 
 	if( !charTexture.loadFromFile(imgPath.c_str() ) ){
 		printf("couldn't load character texture\n");
@@ -79,7 +86,7 @@ void Character::handleEvent( SDL_Event* e ){
 }
 
 //the last element in walls is always the boundary for the game window
-void Character::move( std::vector<SDL_Rect*> walls ){
+void Character::move( std::vector<SDL_Rect*>* walls ){
 	bool colliding = false;
 
 	//note: we do it this way so that first of all it doesn't render and make
@@ -93,15 +100,15 @@ void Character::move( std::vector<SDL_Rect*> walls ){
 	mCollider.y = y;
 
 	//check if we are colliding with anything
-	for( int i = 0; i < walls.size() - 1; i++){
-		if( checkCollision( walls.at( i ), &mCollider ) ){
+	for( int i = 0; i < walls->size() - 1; i++){
+		if( checkCollision( walls->at( i ), &mCollider ) ){
 			colliding = true;
 			break;
 		}
 	}
 
 	//check if going out of bounds
-	if( checkBounds( walls.at(walls.size()-1) ) ){
+	if( checkBounds( walls->at(walls->size()-1) ) ){
 		colliding = true;
 	}
 

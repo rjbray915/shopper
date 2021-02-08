@@ -32,7 +32,7 @@ obj/Character.o: include/Character.h
 obj/Antagonist.o: include/Antagonist.h include/Character.h src/Antagonist.cpp
 	g++ -c -o obj/Antagonist.o src/Antagonist.cpp
 
-obj/Projectile.o: include/Projectile.h
+obj/Projectile.o: include/Projectile.h src/Projectile.cpp
 	g++ -c -o obj/Projectile.o src/Projectile.cpp
 
 obj/Board.o: include/Board.h src/Board.cpp

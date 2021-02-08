@@ -39,7 +39,7 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
 int main( int argc, char* argv[] ){
-	srand(123498765);
+	srand( time(NULL) );
 
   if( init() ){
     if( loadMedia() ){
@@ -48,17 +48,6 @@ int main( int argc, char* argv[] ){
 			board.make_board("boards/main.txt");
       LTexture grocery;
       grocery.loadFromFile( "images/groceryBack.jpg" );
-
-      //environmental objects
-      const int NUM_WALLS = 3;
-      std::vector<SDL_Rect*> walls;
-      SDL_Rect border = { 0, 0, 1280, 720 };
-			walls.push_back( &border );
-
-			//our character
-			Character* dan = new Character(100, 500, 500, 6, 0.0, SDL_FLIP_NONE, 5, 40, 100, "./images/protagonist.png");
-			Antagonist* dummy = new Antagonist(100, 0, 0, 3, 0.0, SDL_FLIP_NONE, 1, 60, 100, "./images/antiTest.png");
-			dummy->initProjectile(10, dan);
 
 			//quit flag
       bool quit = false;
@@ -79,29 +68,14 @@ int main( int argc, char* argv[] ){
 					board.dan_handle(&e);
         }
 
-				//make dummy move around randomly like a lil dummy
-        //dummy->followCharacter(dan);
-				//dummy->set_target(dan);
-
         //our rendering stuff
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
         SDL_RenderClear( gRenderer );
 
-        //background render
-        //grocery.render( 0, 0 );
+        //rendering and movement
 				board.render_board();
-				board.move_entities(walls);
+				board.move_entities( &(board.walls) );
 				board.render_entities();
-
-        /*//sprite movement
-        dan->move( walls );
-        dummy->move( walls );
-				//dummy->antProjectile->move( walls );
-
-        //sprite rendering
-        dan->render();
-        dummy->render();*/
-				//dummy->antProjectile->render();
 
         SDL_RenderPresent( gRenderer );
 

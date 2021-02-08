@@ -8,31 +8,7 @@ void Antagonist::initProjectile(double damage, Character* target){
 }
 
 void Antagonist::setVelocity(int randNum){
-/*
-	switch(randNum){
-		//left
-		case 0:
-			xVel -= charVel;
-			break;
-		//right
-		case 1:
-			xVel += charVel;
-			break;
-		//up
-		case 2:
-			yVel -= charVel;
-			break;
-		//down
-		case 3:
-			yVel += charVel;
-			break;
-		//stop
-		case 4:
-			xVel = 0;
-			yVel = 0;
-			break;
-		//default is stay the same 1/2 time
-	};*/
+	//this is bad :p
 }
 
 void Antagonist::followCharacter(Character* followed){
@@ -70,7 +46,7 @@ void Antagonist::set_target(Character* pTarget){
 }
 
 //overloading the function so i can put characters in vector
-void Antagonist::move( std::vector<SDL_Rect*> walls ){
+void Antagonist::move( std::vector<SDL_Rect*>* walls ){
 	double subX, subY, subDist, fractX, fractY;
   SDL_Rect* targetCollider;
 	bool colliding = false;
@@ -113,15 +89,15 @@ void Antagonist::move( std::vector<SDL_Rect*> walls ){
 	mCollider.y = y;
 
 	//check if we are colliding with anything
-	for( int i = 0; i < walls.size() - 1; i++){
-		if( checkCollision( walls.at( i ), &mCollider ) ){
+	for( int i = 0; i < walls->size() - 1; i++){
+		if( checkCollision( walls->at( i ), &mCollider ) ){
 			colliding = true;
 			break;
 		}
 	}
 
 	//check if going out of bounds
-	if( checkBounds( walls.at(walls.size()-1) ) ){
+	if( checkBounds( walls->at(walls->size()-1) ) ){
 		colliding = true;
 	}
 
@@ -139,6 +115,11 @@ void Antagonist::move( std::vector<SDL_Rect*> walls ){
 
 	//finally, move the Projectile
 	antProjectile->move(walls);
+}
+
+//this will make them follow an isle while their sight to the target is blocked
+void walk_isle(){
+
 }
 
 void Antagonist::render(){

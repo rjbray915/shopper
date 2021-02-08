@@ -17,13 +17,16 @@ class Board{
     Board(int sHeight, int sWidth, string textureFile);
     void make_board(string path);
     void render_board();
-    void move_entities(vector<SDL_Rect*> walls);
+    void move_entities(vector<SDL_Rect*>* walls);
     void render_entities();
     void dan_handle(SDL_Event* e);
+    vector<SDL_Rect*>* gen_walls(Character* target);
+    vector<SDL_Rect*> walls;
 
-  protected:
+  //protected:
     int spaceHeight, spaceWidth, num_enemies;
     vector<string > board;
+    vector<vector<SDL_Rect*> > board_rects;
     LTexture* texture_plate;
     vector<SDL_Rect> squares;
     Character* protag;

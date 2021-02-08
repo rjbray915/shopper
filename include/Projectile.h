@@ -19,7 +19,7 @@ class Projectile{
 		void updateVel();
 
     //movement functions. characters will move at different speeds
-    void move(std::vector<SDL_Rect*> walls);
+    void move(std::vector<SDL_Rect*>* walls);
 
 		//check if we went out of bounds
 		bool checkBounds( SDL_Rect* border );
